@@ -25,7 +25,7 @@ namespace Producer
             string projectId = "my-project-id";
 
             //Set Auth Json File
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "./My Project-c6a1b733a90d.json");
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "./my-json-auth-file.json");
 
             //Set Logger
             GrpcEnvironment.SetLogger(new Grpc.Core.Logging.ConsoleLogger());
