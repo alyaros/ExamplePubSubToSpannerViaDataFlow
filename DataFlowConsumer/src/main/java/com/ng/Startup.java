@@ -121,18 +121,18 @@ public class Startup {
 
         }
 
-
         if (writeToSpannerTable) {
 
-            gameEventsWindow.apply("FormatGameEventsToMutation", MapElements.via(new SimpleFunction<GameEvent, Mutation>() {
+            PCollection<Mutation> mutations = gameEventsWindow.apply("FormatGameEventsToMutation", MapElements.via(new SimpleFunction<GameEvent, Mutation>() {
                 public Mutation apply(GameEvent input) {
                     return Mutation.newInsertBuilder("gameEvents")
                             .set("creationDate").to(Timestamp.of(input.getCreationDate()))
                             .set("gameId").to(input.getGameId().toString())
                             .build();
                 }
-            })).apply("Write", SpannerIO.write().withInstanceId(spannerInstanceId).withDatabaseId(spannerDatabaseId).withProjectId(projectId));
+            }));
 
+            mutations.apply("Write", SpannerIO.write().withInstanceId(spannerInstanceId).withDatabaseId(spannerDatabaseId).withProjectId(projectId));
         }
 
         // Run the pipeline.
